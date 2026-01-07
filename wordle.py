@@ -34,7 +34,7 @@ def print_color_coded_words(letters, scores):
     
         sys.stdout.write(result_string)
         sys.stdout.flush()
-        time.sleep(0.4)
+        time.sleep(0.2)
 
 
 
@@ -58,28 +58,31 @@ def game():
         guess_count+=1
         guess = input()
         if len(guess) == 5:
-            letter_list = [letter.strip() for letter in guess]
-            points = result(letter_list,current_answer)
-            print_color_coded_words(letter_list, points)
-            if sum(points) == 15:
-                win = True
-                break
+            if guess in word_list:
+                letter_list = [letter.strip() for letter in guess]
+                points = result(letter_list,current_answer)
+                print_color_coded_words(letter_list, points)
+                if sum(points) == 15:
+                    win = True
+                    break
+            else:
+                guess_count-=1
         else:
             guess_count-=1
         sys.stdout.write("\033[B")
         sys.stdout.write("\033[15D")
         sys.stdout.flush()
-
+        win = False
 
 
     if win == True:
         win = False
         win_counter +=1
-        print(f"""You Won, good job, wanna play again? (Y/N)
+        print(f"""\nYou Won, good job, wanna play again? (Y/N)
 Win counter: {win_counter}   
 """)
     else:
-        print("You lost, wanna play again?(Y/N)")
+        print(f"You lost, the word was {current_answer},wanna play again?(Y/N)")
     option = input()
     if option == "Y":
         game()
