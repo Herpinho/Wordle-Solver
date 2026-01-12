@@ -56,7 +56,7 @@ def game():
     guess_count = 0
     while guess_count < 6:
         guess_count+=1
-        guess = input()
+        guess = input().lower()
         if len(guess) == 5:
             if guess in word_list:
                 letter_list = [letter.strip() for letter in guess]
@@ -67,8 +67,15 @@ def game():
                     break
             else:
                 guess_count-=1
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[K")
+                sys.stdout.write("\033[F")
+                
         else:
             guess_count-=1
+            sys.stdout.write("\033[F")
+            sys.stdout.write("\033[K")
+            sys.stdout.write("\033[F")
         sys.stdout.write("\033[B")
         sys.stdout.write("\033[15D")
         sys.stdout.flush()
@@ -82,12 +89,15 @@ def game():
 Win counter: {win_counter}   
 """)
     else:
-        print(f"You lost, the word was {current_answer},wanna play again?(Y/N)")
-    option = input()
-    if option == "Y":
-        game()
-    if option== "N":
-        exit()    
+        word = "".join(current_answer)
+        print(f"You lost, the word was {word.upper()}, wanna play again?(Y/N)")
+    option = ""
+    while option not in ["Y","N"]:
+        option = input().upper()
+        if option == "Y":
+            game()
+        if option == "N":
+            exit()    
 
 if __name__  == "__main__":
     game()    
