@@ -1,0 +1,4 @@
+LEARNING_RATE = 0.001
+NUM_SAMPLES = 20000
+EPOCHS = 10
+WORDLE_WEIGHTS = "wordle_weights.npy"
