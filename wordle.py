@@ -1,10 +1,8 @@
 import random
 import time
 import sys
-with open('valid-wordle-words.txt', 'r') as f:
-    word_list = [line.strip() for line in f]
-with open('shuffled_real_wordles.txt', 'r') as f:
-    answer_list = [line.strip() for line in f]
+from data_loader import *
+
 def start():
     answer = answer_list[random.randint(1,2316)]
     answer_word_list = [letter.strip() for letter in answer]
@@ -50,18 +48,21 @@ def result(letter_list,answer_word_list):
             points.append(1)
         pos +=1
     return points
-def game():
+def game(ai_guess):
     global win_counter
     current_answer = start()
     guess_count = 0
+    ai_guess.reset()
     while guess_count < 6:
         guess_count+=1
-        guess = input().lower()
+        if ai_guess:
+            guess = ai_guess.get_guess(guess_count)
         if len(guess) == 5:
             if guess in word_list:
                 letter_list = [letter.strip() for letter in guess]
                 points = result(letter_list,current_answer)
                 print_color_coded_words(letter_list, points)
+                sys.stdout.write("\n")
                 if sum(points) == 15:
                     win = True
                     break
@@ -76,11 +77,12 @@ def game():
             sys.stdout.write("\033[F")
             sys.stdout.write("\033[K")
             sys.stdout.write("\033[F")
-        sys.stdout.write("\033[B")
+        sys.stdout.write("\n")
+        sys.stdout.flush()
         sys.stdout.write("\033[15D")
         sys.stdout.flush()
         win = False
-
+        ai_guess.update(guess,points)
 
     if win == True:
         win = False
@@ -91,11 +93,11 @@ Win counter: {win_counter}
     else:
         word = "".join(current_answer)
         print(f"You lost, the word was {word.upper()}, wanna play again?(Y/N)")
-    option = ""
+    option = "" 
     while option not in ["Y","N"]:
-        option = input().upper()
+        option = input().upper() if not ai_guess else "Y"
         if option == "Y":
-            game()
+            game(ai_guess)
         if option == "N":
             exit()    
 
