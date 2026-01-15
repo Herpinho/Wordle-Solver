@@ -5,8 +5,8 @@ from data_loader import *
 
 def start():
     answer = answer_list[random.randint(1,2316)]
-    answer_word_list = [letter.strip() for letter in answer]
-    return answer_word_list
+    answer_letter_list = [letter.strip() for letter in answer]
+    return answer_letter_list
 win_counter = 0
 
 def print_color_coded_words(letters, scores):
@@ -36,19 +36,23 @@ def print_color_coded_words(letters, scores):
 
 
 
-def result(letter_list,answer_word_list):
-    pos = 0
-    points = []
-    for letter in letter_list:
-        if letter == answer_word_list[pos]:
-            points.append(3)
-        elif letter in answer_word_list:
-            points.append(2)
-        else:
-            points.append(1)
-        pos +=1
+def result(letter_list,answer_letter_list):
+    points = [1] * 5
+    temp_answer = list(answer_letter_list)
+    for i in range(5):
+        if letter_list[i] == answer_letter_list[i]:
+            points[i]=3
+            temp_answer[i]= None
+    for i in range(5):
+        if points[i]==3:
+            continue
+        letter = letter_list[i]
+        if letter in temp_answer:
+            points[i] = 2
+            temp_answer.remove(letter)
     return points
-def game(ai_guess):
+
+def game_ai(ai_guess):
     global win_counter
     current_answer = start()
     guess_count = 0
@@ -100,6 +104,55 @@ Win counter: {win_counter}
             game(ai_guess)
         if option == "N":
             exit()    
+def game():
+    global win_counter
+    current_answer = start()
+    guess_count = 0
+    while guess_count < 6:
+        print(guess_count)
+        guess_count+=1
+        guess = input().lower()
+        if len(guess) == 5:
+            if guess in word_list:
+                letter_list = [letter.strip() for letter in guess]
+                points = result(letter_list,current_answer)
+                print_color_coded_words(letter_list, points)
+                if sum(points) == 15:
+                    win = True
+                    break
+            else:
+                guess_count-=1
+                sys.stdout.write("\033[F")
+                sys.stdout.write("\033[K")
+                sys.stdout.write("\033[F")
+                
+        else:
+            guess_count-=1
+            sys.stdout.write("\033[F")
+            sys.stdout.write("\033[K")
+            sys.stdout.write("\033[F")
+        sys.stdout.write("\033[B")
+        sys.stdout.write("\033[15D")
+        sys.stdout.flush()
+        win = False
+
+
+    if win == True:
+        win = False
+        win_counter +=1
+        print(f"""\nYou Won, good job, wanna play again? (Y/N)
+Win counter: {win_counter}   
+""")
+    else:
+        word = "".join(current_answer)
+        print(f"You lost, the word was {word.upper()}, wanna play again?(Y/N)")
+    option = ""
+    while option not in ["Y","N"]:
+        option = input().upper()
+        if option == "Y":
+            game()
+        if option == "N":
+            exit()    
 
 if __name__  == "__main__":
-    game()    
+    game()   
