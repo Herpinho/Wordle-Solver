@@ -2,12 +2,18 @@ import random
 import time
 import sys
 from data_loader import *
-
+win_counter = 0
 def start():
+<<<<<<< Updated upstream
     answer = answer_list[random.randint(1,2316)]
     answer_letter_list = [letter.strip() for letter in answer]
     return answer_letter_list
 win_counter = 0
+=======
+    answer = answer_list[random.randint(0,2315)]
+    answer_word_list = [letter.strip() for letter in answer]
+    return answer_word_list
+>>>>>>> Stashed changes
 
 def print_color_coded_words(letters, scores):
     sys.stdout.write("\033[F")
@@ -25,15 +31,16 @@ def print_color_coded_words(letters, scores):
         sys.stdout.write(f"\033[{i*3}D")
         sys.stdout.write("\033[K")
         sys.stdout.flush()
-        char = letters[i].upper()
+        letter = letters[i].upper()
         color = bg_colors.get(scores[i], "")
 
-        result_string += f"{color} {char} {reset}"
+        result_string += f"{color} {letter} {reset}"
     
         sys.stdout.write(result_string)
         sys.stdout.flush()
         time.sleep(0.2)
 
+<<<<<<< Updated upstream
 
 
 def result(letter_list,answer_letter_list):
@@ -45,6 +52,17 @@ def result(letter_list,answer_letter_list):
             temp_answer[i]= None
     for i in range(5):
         if points[i]==3:
+=======
+def result(letter_list,answer_word_list):
+    points = [1] * 5
+    temp_answer = list(answer_word_list)
+    for i in range(5):
+        if letter_list[i] == answer_word_list[i]:
+            points[i] = 3
+            temp_answer[i] = None
+    for i in range(5):
+        if points[i] == 3:
+>>>>>>> Stashed changes
             continue
         letter = letter_list[i]
         if letter in temp_answer:
@@ -52,11 +70,18 @@ def result(letter_list,answer_letter_list):
             temp_answer.remove(letter)
     return points
 
+<<<<<<< Updated upstream
 def game_ai(ai_guess):
+=======
+def game(ai_guess=None):
+>>>>>>> Stashed changes
     global win_counter
     current_answer = start()
     guess_count = 0
-    ai_guess.reset()
+    if ai_guess:
+        ai_guess.reset()
+    else:
+        guess = input()
     while guess_count < 6:
         guess_count+=1
         if ai_guess:
@@ -86,7 +111,8 @@ def game_ai(ai_guess):
         sys.stdout.write("\033[15D")
         sys.stdout.flush()
         win = False
-        ai_guess.update(guess,points)
+        if ai_guess:
+            ai_guess.update(guess,points)
 
     if win == True:
         win = False
