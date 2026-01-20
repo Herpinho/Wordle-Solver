@@ -2,7 +2,7 @@ import numpy as np
 import random
 from model import WordleSolver
 from config import * 
-from wordle import result as get_scores,game
+from wordle import result as get_scores,game_ai
 from trainer import run_training_loop, get_top_letters
 from data_loader import *
 import sys
@@ -145,6 +145,6 @@ if __name__ == "__main__":
             print("Training Complete")
         case 3:
             solver = WordleSolver()
-            game(solver)
+            game_ai(solver)
         case 4:
             reset_ai()

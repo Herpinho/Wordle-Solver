@@ -4,16 +4,9 @@ import sys
 from data_loader import *
 win_counter = 0
 def start():
-<<<<<<< Updated upstream
     answer = answer_list[random.randint(1,2316)]
     answer_letter_list = [letter.strip() for letter in answer]
     return answer_letter_list
-win_counter = 0
-=======
-    answer = answer_list[random.randint(0,2315)]
-    answer_word_list = [letter.strip() for letter in answer]
-    return answer_word_list
->>>>>>> Stashed changes
 
 def print_color_coded_words(letters, scores):
     sys.stdout.write("\033[F")
@@ -40,7 +33,6 @@ def print_color_coded_words(letters, scores):
         sys.stdout.flush()
         time.sleep(0.2)
 
-<<<<<<< Updated upstream
 
 
 def result(letter_list,answer_letter_list):
@@ -52,17 +44,6 @@ def result(letter_list,answer_letter_list):
             temp_answer[i]= None
     for i in range(5):
         if points[i]==3:
-=======
-def result(letter_list,answer_word_list):
-    points = [1] * 5
-    temp_answer = list(answer_word_list)
-    for i in range(5):
-        if letter_list[i] == answer_word_list[i]:
-            points[i] = 3
-            temp_answer[i] = None
-    for i in range(5):
-        if points[i] == 3:
->>>>>>> Stashed changes
             continue
         letter = letter_list[i]
         if letter in temp_answer:
@@ -70,11 +51,7 @@ def result(letter_list,answer_word_list):
             temp_answer.remove(letter)
     return points
 
-<<<<<<< Updated upstream
 def game_ai(ai_guess):
-=======
-def game(ai_guess=None):
->>>>>>> Stashed changes
     global win_counter
     current_answer = start()
     guess_count = 0
@@ -127,7 +104,7 @@ Win counter: {win_counter}
     while option not in ["Y","N"]:
         option = input().upper() if not ai_guess else "Y"
         if option == "Y":
-            game(ai_guess)
+            game_ai(ai_guess)
         if option == "N":
             exit()    
 def game():
